@@ -17,9 +17,12 @@ const jwtValidateMiddleware = (req, res, next) => {
         err: token,
       });
     } else {
-      // req.id = decoded.id;
-      // req.nama = decoded.nama;
-      // req.email = decoded.email;
+      req.id = decoded.id;
+      req.namaLengkap = decoded.namaLengkap;
+      req.namaPetugas = decoded.namaPetugas;
+      req.username = decoded.username;
+      req.telp = decoded.telp;
+      req.role = decoded.role;
       next();
     }
   });

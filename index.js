@@ -1,6 +1,8 @@
 const dotenv = require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
+
 const paginationMiddleware = require('./src/middleware/paginationMiddleware');
 const routers = require('./src/routes/routers');
 const notFound = require('./src/middleware/notFound');
@@ -13,6 +15,7 @@ const port = process.env.PORT || 8081;
 
 app.use(express.json());
 app.use(log);
+app.use(cors())
 // app.use(express.static('./src/storage/uploads'));
 app.use(paginationMiddleware);
 app.use(routers);

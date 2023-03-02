@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   petugas.init({
+    id_level: DataTypes.INTEGER,
     namaPetugas: DataTypes.STRING(25),
     username: DataTypes.STRING(25),
-    password: DataTypes.STRING(25),
-    idLevel: DataTypes.INTEGER
+    password: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'petugas',

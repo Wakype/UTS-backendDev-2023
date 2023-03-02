@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class level extends Model {
+  class historiLelang extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,11 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  level.init({
-    level: DataTypes.ENUM('administrator', 'petugas')
+  historiLelang.init({
+    id_lelang: DataTypes.INTEGER,
+    id_barang: DataTypes.INTEGER,
+    id_user: DataTypes.INTEGER,
+    penawaranHarga: DataTypes.INTEGER(20)
   }, {
     sequelize,
-    modelName: 'level',
+    modelName: 'historiLelang',
   });
-  return level;
+  return historiLelang;
 };

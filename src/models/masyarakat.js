@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
   masyarakat.init({
     namaLengkap: DataTypes.STRING(25),
     username: DataTypes.STRING(25),
-    password: DataTypes.STRING(25),
-    telp: DataTypes.INTEGER
+    telp: DataTypes.STRING(25),
+    password: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'masyarakat',

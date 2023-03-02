@@ -17,12 +17,12 @@ module.exports = {
         type: Sequelize.STRING(25),
         allowNull: false,
       },
-      password: {
+      telp: {
         type: Sequelize.STRING(25),
         allowNull: false,
       },
-      telp: {
-        type: Sequelize.INTEGER,
+      password: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       createdAt: {

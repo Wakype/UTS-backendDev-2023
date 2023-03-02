@@ -2,35 +2,43 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('petugas', {
+    await queryInterface.createTable('historiLelangs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      id_level: {
-        type: Sequelize.INTEGER,
+      id_lelang: {
         allowNull: false,
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        type: Sequelize.INTEGER,
         references: {
-          model: 'levels',
+          model: 'lelangs',
           key: 'id',
-          as: 'id_level',
+          as: 'id_lelang',
         },
       },
-      namaPetugas: {
-        type: Sequelize.STRING(25),
+      id_barang: {
         allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'barangs',
+          key: 'id',
+          as: 'id_barang',
+        },
       },
-      username: {
-        type: Sequelize.STRING(25),
+      id_user: {
         allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'masyarakats',
+          key: 'id',
+          as: 'id_user',
+        },
       },
-      password: {
-        type: Sequelize.STRING,
+      penawaranHarga: {
         allowNull: false,
+        type: Sequelize.INTEGER(20),
       },
       createdAt: {
         allowNull: false,
@@ -43,6 +51,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('petugas');
+    await queryInterface.dropTable('historiLelangs');
   },
 };
