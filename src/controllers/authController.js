@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const dayjs = require('dayjs');
-const { register } = require('../services/registration-service');
+const { register, login } = require('../services/registration-service');
 const MasyarakatModel = require('../models').masyarakat;
 const PetugasModel = require('../models').petugas;
 const LevelModel = require('../models').level;
@@ -29,9 +29,9 @@ async function registerAuth(req, res) {
 async function loginAuth(req, res) {
   try {
     let payload = req.body;
-    let { namaLengkap, namaPetugas, password } = payload;
+    let { username, password } = payload;
 
-    
+    login({username, password, req, res})
   } catch (err) {
     res.status(403).json({
       status: 'error',
