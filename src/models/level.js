@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      level.belongsTo(models.petugas, { as: 'role', foreignKey: 'id' });
     }
   }
   level.init({

@@ -1,12 +1,13 @@
 const { Op } = require('sequelize');
 const checkQuery = require('../utils/queryString');
+const dayjs = require('dayjs');
 
 const BarangModel = require('../models').barang;
 
 async function getBarang(req, res) {
   try {
     let {
-      namaBarang,
+      keyword,
       hargaMinimal,
       hargaMaximum,
       page,
@@ -18,46 +19,70 @@ async function getBarang(req, res) {
 
     let barang = await BarangModel.findAndCountAll({
       where: {
-        [Op.or]: [
-          {
-            namaBarang: {
-              [Op.substring]: namaBarang,
-            },
+        ...(checkQuery(keyword) && {
+          namaBarang: {
+            [Op.substring]: keyword,
           },
-          {
-            hargaAwal: {
-              [Op.gte]: hargaMinimal,
-            },
+        }),
+        ...(checkQuery(hargaMinimal) && {
+          hargaAwal: {
+            [Op.gte]: hargaMinimal,
           },
-          {
-            hargaAwal: {
-              [Op.lte]: hargaMaximum,
-            },
+        }),
+        ...(checkQuery(hargaMaximum) && {
+          hargaAwal: {
+            [Op.lte]: hargaMaximum,
           },
-        ],
+        }),
       },
       limit: pageSize,
       offset: offset,
       order: [[sortBy, orderBy]],
     });
     res.json({
-      status: '200',
+      status: 'Success',
       msg: 'barang OK',
       pagination: {
         currentPage: page,
         pageSize: pageSize,
         totalData: barang.count,
-
       },
-      data: barang .rows,
+      data: barang,
     });
   } catch (err) {
     console.log(err);
     res.status(401).json({
-      status: 'err',
-      msg: err.message,
+      status: 'Fail',
+      msg: 'Gagal mendapatkan barang',
+      err: err.message,
     });
   }
 }
 
-module.exports = { getBarang };
+async function createBarang(req, res) {
+  try {
+    let { namaBarang, deskripsiBarang, hargaAwal } = req.body;
+    const now = dayjs()
+
+    await BarangModel.create({
+      id_petugas: req.id,
+      namaBarang: namaBarang,
+      deskripsiBarang: deskripsiBarang,
+      hargaAwal: hargaAwal,
+      tanggal: now,
+    });
+
+    res.status(201).json({
+      status: 'Success',
+      msg: 'Barang berhasil ditambah',
+    });
+  } catch (err) {
+    res.status(403).json({
+      status: 'Fail',
+      msg: 'Gagal menambah barang',
+      err: err.message,
+    });
+  }
+}
+
+module.exports = { getBarang, createBarang };

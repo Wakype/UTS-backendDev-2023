@@ -9,6 +9,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      id_petugas: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'petugas',
+          key: 'id',
+          as: 'id_petugas',
+        },
+      },
       namaBarang: {
         type: Sequelize.STRING(25),
         allowNull: false,

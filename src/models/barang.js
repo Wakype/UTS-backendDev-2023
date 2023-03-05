@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   barang.init({
+    id_petugas: DataTypes.INTEGER,
     namaBarang: DataTypes.STRING(25),
     tanggal: DataTypes.DATE,
     hargaAwal: DataTypes.INTEGER(20),

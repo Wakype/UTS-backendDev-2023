@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const dayjs = require('dayjs');
-const { register, login } = require('../services/registration-service');
+const { register, login, auth } = require('../services/registration-service');
 const MasyarakatModel = require('../models').masyarakat;
 const PetugasModel = require('../models').petugas;
 const LevelModel = require('../models').level;
@@ -20,7 +20,6 @@ async function registerAuth(req, res) {
       });
     }).catch(err => {
       res.status(403).json({
-        // e: err,
         status: 'Fail',
         msg: err.message,
       });
@@ -34,10 +33,21 @@ async function loginAuth(req, res) {
     login({username, password, req, res})
   } catch (err) {
     res.status(403).json({
-      status: 'error',
-      msg: 'failed to login',
+      status: 'Fail',
+      msg: err.message,
     });
   }
 }
 
-module.exports = { registerAuth, loginAuth };
+async function authMe(req, res) {
+  try {
+    auth(req, res)
+  } catch (err) {
+    res.status(403).json({
+      status: 'Fail',
+      msg: err.message,
+    });
+  }
+}
+
+module.exports = { registerAuth, loginAuth, authMe };

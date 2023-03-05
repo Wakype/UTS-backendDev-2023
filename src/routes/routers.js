@@ -1,9 +1,8 @@
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
 const { jwtValidateMiddleware } = require('../middleware/jwtValidateMiddleware');
-const { registerAuth, loginAuth } = require('../controllers/authController');
-const { getBarang } = require('../controllers/barangController');
+const { registerAuth, loginAuth, authMe } = require('../controllers/authController');
+const { getBarang, createBarang } = require('../controllers/barangController');
+const { getPetugas } = require('../controllers/userController');
 
 const routers = express.Router();
 
@@ -12,9 +11,18 @@ const routers = express.Router();
 routers.post('/register', registerAuth);
 routers.post('/login', loginAuth);
 
-// routers.use(jwtValidateMiddleware);
+routers.use(jwtValidateMiddleware);
 
 // ========================== GET ========================= //
+// === Auth === //
+routers.get('/authme', authMe)
+
 // === Barang === //
-routers.get('/list-barang', getBarang)
+routers.get('/barang/list-barang', getBarang)
+routers.post('/barang/create-barang', createBarang)
+
+// === User === //
+routers.get('/petugas/list-petugas', getPetugas)
+
+
 module.exports = routers;

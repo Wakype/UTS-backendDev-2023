@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      petugas.hasOne(models.level, { as: 'role', foreignKey: 'id' });
     }
   }
   petugas.init({
