@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      lelang.hasOne(models.barang, { as: 'barang', foreignKey: 'id_petugas' });
     }
   }
   lelang.init({

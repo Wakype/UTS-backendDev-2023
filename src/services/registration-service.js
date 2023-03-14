@@ -117,11 +117,14 @@ async function login({ username, password, req, res }) {
       });
     } else {
       const verify = await bcrypt.compareSync(password, petugas.password);
+      let password1 = 'qwertyuiop';
+      const hashPassword = bcrypt.hashSync(password1, 10);
 
       if (!verify) {
         return res.status(422).json({
-          status: 422,
+          status: 'Fail',
           msg: 'Username & Password tidak dicocok',
+          p: hashPassword,
         });
       }
 
@@ -154,53 +157,56 @@ async function login({ username, password, req, res }) {
 
 async function auth(req, res) {
   try {
-    let username = req.username;
+    let id_level = req.id_level;
 
-    const petugas = await PetugasModel.findOne({
-      where: {
-        username: username,
-      },
-      include: [
-        {
-          model: models.level,
-          require: true,
-          as: 'role',
-          attributes: ['id', 'level'],
+    if (id_level !== undefined) {
+      const petugas = await PetugasModel.findOne({
+        where: {
+          id_level: id_level,
         },
-      ],
-    });
+        include: [
+          {
+            model: models.level,
+            require: true,
+            as: 'role',
+            attributes: ['id', 'level'],
+          },
+        ],
+      });
 
-    if (petugas?.id_level !== undefined) {
-      if (petugas === null) {
-        return res.status(404).json({
-          status: 'Fail',
-          msg: 'Username tidak ditemukan',
+      if (petugas !== undefined) {
+        if (petugas === null) {
+          return res.status(404).json({
+            status: 'Fail',
+            msg: 'Username tidak ditemukan',
+          });
+        }
+
+        const token = jwt.sign(
+          {
+            id: req?.id,
+            username: petugas?.username,
+            namaPetugas: petugas?.namaPetugas,
+            role: petugas?.role?.level,
+            id_level: req?.id_level,
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: '7d',
+          }
+        );
+        res.json({
+          status: 'Success',
+          msg: 'successfully login',
+          token: token,
+          user: petugas,
         });
       }
-
-      const token = jwt.sign(
-        {
-          id: req?.id,
-          username: petugas?.username,
-          namaPetugas: petugas?.namaPetugas,
-          role: petugas?.role?.level,
-          id_level: req?.id_level,
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: '7d',
-        }
-      );
-      res.json({
-        status: 'Success',
-        msg: 'successfully login',
-        token: token,
-        user: petugas,
-      });
     } else {
+      let id = req.id;
       const masyarakat = await MasyarakatModel.findOne({
         where: {
-          username: username,
+          id: id,
         },
       });
 

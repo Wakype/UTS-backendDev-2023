@@ -9,6 +9,8 @@ const PetugasModel = require('../models').petugas;
 const LevelModel = require('../models').level;
 
 async function registerAuth(req, res) {
+ 
+
   let payload = req.body;
     let { namaLengkap, namaPetugas, password, username, telp, role } = payload;
 
